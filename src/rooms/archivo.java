@@ -38,16 +38,12 @@ public class archivo {
                     break;
                 }
                 
-                if (Integer.parseInt(habitaciones) != estructura.length()) {
-                    System.out.println("error en cadena de habitaciones, no coincide con la cantidad especificada.");
-                    break;
-                }
-                else if (Integer.parseInt(habitaciones) == estructura.length()) {
+                if (Integer.parseInt(habitaciones) == estructura.length()) {
                     System.out.println(habitaciones + " " + estructura);
                     this.matrices(Integer.parseInt(habitaciones), estructura);
                 }
                 else {
-                    System.out.println("error en estructura");
+                    System.out.println("error en cadena de habitaciones, no coincide con la cantidad especificada.");
                 }
             }
 
