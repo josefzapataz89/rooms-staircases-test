@@ -65,41 +65,29 @@ public class archivo {
     public void caminar(int habitaciones, int[][] pasos, int[][] matriz, boolean[][] recorrido) {
         for(int i=0; i<2; i++) {
             for (int j=0; j<habitaciones; j++) {
+                for(int k=0; k<2; k++) {
+                    for (int l=0; l<habitaciones; l++) {
+                        recorrido[k][l] = false;
+                    }
+                }
                 pasos[i][j] = this.cambiar_habitacion(i, j, matriz, recorrido);
-                System.out.println("desde piso " + i + " hab " + j + " visita " + pasos[i][j]);
             }
-        } 
+        }
+        System.out.println(Arrays.deepToString(pasos));
     }
     
     public int cambiar_habitacion(int piso, int habitacion, int[][] matriz, boolean[][] recorrido) {
         recorrido[piso][habitacion] = true;
+//        System.out.println(Arrays.deepToString(recorrido));
         int[] direccion = new int[4];
-        direccion[0] = 0;
-        direccion[1] = 0;
-        direccion[2] = 0;
-        direccion[3] = 0;
-
-        // arriba
-        if (piso == 0 && !recorrido[piso+1][habitacion] && matriz[piso][habitacion] == 1) {
-            recorrido[piso+1][habitacion] = true;
-            direccion[1] = this.cambiar_habitacion(piso+1, habitacion, matriz, recorrido);
-        }
-        // abajo
-        if (piso-1 >= 0 && !recorrido[piso-1][habitacion] && matriz[piso][habitacion] == 1) {
-            recorrido[piso-1][habitacion] = true;
-            direccion[3] = this.cambiar_habitacion(piso-1, habitacion, matriz, recorrido);
-        }
-
         // derecha
-        if (habitacion+1 < recorrido[piso].length && !recorrido[piso][habitacion+1]) {
-            recorrido[piso][habitacion+1] = true;
-            direccion[0] = this.cambiar_habitacion(piso, habitacion+1, matriz, recorrido);
-        }
+        direccion[0] = (habitacion+1 < recorrido[piso].length && !recorrido[piso][habitacion+1]) ? direccion[0] = this.cambiar_habitacion(piso, habitacion+1, matriz, recorrido) : 0;
+        // arriba
+        direccion[1] = (piso == 0 && !recorrido[piso+1][habitacion] && matriz[piso][habitacion] == 1) ? this.cambiar_habitacion(piso+1, habitacion, matriz, recorrido) : 0;
         // izquierda
-        if (habitacion-1 >= 0 && !recorrido[piso][habitacion-1]) {
-            recorrido[piso][habitacion-1] = true;
-            direccion[2] = this.cambiar_habitacion(piso, habitacion-1, matriz, recorrido);
-        }
+        direccion[2] = (habitacion-1 >= 0 && !recorrido[piso][habitacion-1]) ? this.cambiar_habitacion(piso, habitacion-1, matriz, recorrido) : 0;
+        // abajo
+        direccion[3] = (piso-1 >= 0 && !recorrido[piso-1][habitacion] && matriz[piso][habitacion] == 1) ? this.cambiar_habitacion(piso-1, habitacion, matriz, recorrido) : 0;
         
         return 1 + Arrays.stream(direccion).max().getAsInt();
     }
