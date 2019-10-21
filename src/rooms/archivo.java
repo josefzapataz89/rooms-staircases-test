@@ -22,13 +22,27 @@ public class archivo {
             String iteraciones;
             iteraciones = scanner.nextLine();
             
+            if (Integer.parseInt(iteraciones) < 1 ||  Integer.parseInt(iteraciones) > 100) {
+                System.out.println("Cantidad de iteraciones fuera de rango");
+                return;
+            }
+            
             for (int i=0; i < Integer.parseInt(iteraciones); i++) {
                 String habitaciones;
                 String estructura;
                 habitaciones = scanner.nextLine();
                 estructura = scanner.nextLine();
+               
+                if (Integer.parseInt(habitaciones) < 1 || Integer.parseInt(habitaciones) > 1000) {
+                    System.out.println("cantidad de habitaciones fuera de rango.");
+                    break;
+                }
                 
-                if (Integer.parseInt(habitaciones) == estructura.length()) {
+                if (Integer.parseInt(habitaciones) != estructura.length()) {
+                    System.out.println("error en cadena de habitaciones, no coincide con la cantidad especificada.");
+                    break;
+                }
+                else if (Integer.parseInt(habitaciones) == estructura.length()) {
                     System.out.println(habitaciones + " " + estructura);
                     this.matrices(Integer.parseInt(habitaciones), estructura);
                 }
@@ -75,11 +89,12 @@ public class archivo {
                 pasos[i][j] = this.cambiar_habitacion(i, j, matriz, recorrido);
             }
         }
-        System.out.println(Arrays.deepToString(pasos));
+//        System.out.println(Arrays.deepToString(pasos));
         
         int max_primer_piso = Arrays.stream(pasos[0]).max().getAsInt();
         int max_segundo_piso = Arrays.stream(pasos[1]).max().getAsInt();
         int cuartos_visitados = (max_primer_piso >= max_segundo_piso) ? max_primer_piso : max_segundo_piso;
+        System.out.println(cuartos_visitados);
 
         try {
             this.guardar_respuesta(cuartos_visitados);
