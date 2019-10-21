@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -74,6 +76,17 @@ public class archivo {
             }
         }
         System.out.println(Arrays.deepToString(pasos));
+        
+        int max_primer_piso = Arrays.stream(pasos[0]).max().getAsInt();
+        int max_segundo_piso = Arrays.stream(pasos[1]).max().getAsInt();
+        int cuartos_visitados = (max_primer_piso >= max_segundo_piso) ? max_primer_piso : max_segundo_piso;
+
+        try {
+            this.guardar_respuesta(cuartos_visitados);
+        } catch (IOException ex) {
+            Logger.getLogger(archivo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     public int cambiar_habitacion(int piso, int habitacion, int[][] matriz, boolean[][] recorrido) {
@@ -92,9 +105,10 @@ public class archivo {
         return 1 + Arrays.stream(direccion).max().getAsInt();
     }
     
-    public void guardar_respuesta(char[] resultado) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", false));
+    public void guardar_respuesta(int resultado) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true));
         writer.append(String.valueOf(resultado));
+        writer.newLine();
         writer.close();
     }
 }
